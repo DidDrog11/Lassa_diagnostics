@@ -27,14 +27,14 @@ ui <-fluidPage(
   fluidPage(theme = shinytheme("cerulean")),
   
   # password area 
-  fluidRow(column(
-    10, align="center", offset = 0,
-    div(id="login",style='width:100%; display:table',
-        
-        passwordInput("password", "Password:"),
-        actionButton("go", "Go", class="btn-primary")   
-    )
-  )),
+  # fluidRow(column(
+  #   10, align="center", offset = 0,
+  #   div(id="login",style='width:100%; display:table',
+  #       
+  #       passwordInput("password", "Password:"),
+  #       actionButton("go", "Go", class="btn-primary")   
+  #   )
+  # )),
 
   shinyjs::hidden(fluidRow(id="form1",
     
