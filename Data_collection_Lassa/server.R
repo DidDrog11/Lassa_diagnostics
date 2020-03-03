@@ -9,60 +9,15 @@
 
 library("shiny")
 
-outputDir <- "Data_extraction"
+outputDir <- "/Users/david/Google Drive/PhD/LIPS Review/LIPS_Review/Lassa_diagnostics/Data_collection_Lassa"
 
 # Define the fields we want to save from the form
 fields <- c("Name", "Article title", "First Author", "Year(s) of data collection", "Country of data collection",
             "Number of different assay types used", "Assay type", "Assay detection method", "Use of a 'Gold Standard'",
-            "Number of different animal species", "Animal species", "Number of samples", "Number positive", "Number negative", "Reported sensitivity", "Reported specificty",
+            "Number of different animal species", "Animal species", "Number of samples", "Number positive", "Number negative", "Reported sensitivity", "Reported specificity",
             "Other comments")
 full_text <- read.csv(file = "Data_collection_Lassa/Full_text_export.csv")
 
-saveData <- function(input) {
-    #put variables in a dataframe
-    data <- data.frame(matrix(nrow = 1, ncol = 0))
-    for (x in fields) {
-        var <- input[[x]]
-        if (length(var) > 1) {
-            #this will allow interpreting list answers from questions
-            data[[x]] <- list(var)
-        } else {
-            #otherwise data can be directly extracted
-            data[[x]] <- var
-        }
-    }
-    #collect time and date submitted
-    data$submit_time <- date()
-    
-    #create a unique filename for each form
-    fileName <- sprintf(
-        "%s_%s.rds",
-        as.integer(Sys.time()),
-        digest::digest(data)
-    )
-    
-    #write the file to the local system
-    saveRDS(
-        object = data,
-        file = file.path(outputDir, filename)
-    )
-}
- 
-loadData <- function() {
-    #read all the files into a list
-    files <- list.files(outputDir, full.names = T)
-    if (length(files) == 0) {
-        #create empty dataframe with the question columns
-        field_list <- c(fields, "submit_time")
-        data <- data.frame(matrix(ncol = length(field_list), nrow = 0))
-        names(data) <- field_list
-    } else {
-        data <- lapply(files, function(x) readRDS(x))
-        #concatenate all data together into one data.frame
-        data <- do.call(rbind, data)
-    }
-    data
-}
 
 #define the questions and the types ----
 Name <- selectInput("Name", "What is your name?",
@@ -132,27 +87,29 @@ Reported_specificity <- numericInput("Reported specificity", "What was the repor
 
 Other_comments <- textAreaInput("Other comments", "Are there any other data to be collected from this paper?")
 
-resetForm <- function(session) {
-    updateTextInput(session, c("Country_data"), value = "")
-    updateSelectInput(session, c("Name", "Article_title", "First_author"), selected = character(0))
-}
-
-#reactive functions ----
 server = function(input, output, session) {
-    #when submit is clicked, save the form data
+    
+    # Whenever a field is filled, aggregate all form data
+    formData <- reactive({
+        data <- sapply(fields, function(x) input[[x]])
+        data
+    })
+    
+    # When the Submit button is clicked, save the form data
     observeEvent(input$submit, {
-        saveData(input)
+        saveData(formData())
         resetForm(session)
+        n_responses <- length(list.files(outputDir))
+        response <- paste0("Thank you for completing data entry. This is record number ",
+                           n_responses, ".")
+        showNotification(response, duration = 0, type = "message")
+        
     })
-    #clear the fields
-    observeEvent(input$clear, {
-        resetForm(session)
-    })
+    
+    # Show the previous responses
+    # (update with current response when Submit is clicked)
+    output$responses <- DT::renderDataTable({
+        input$submit
+        loadData()
+    })     
 }
-
-shinyApp(ui, server)
-
-
-
-
-

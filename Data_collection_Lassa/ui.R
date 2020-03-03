@@ -36,6 +36,7 @@ ui <- fluidPage(title = "Lassa fever diagnostics data extraction",
                 )
 )
 
+
 shinyApp(ui, server)
 
 # ui <- fluidPage(
