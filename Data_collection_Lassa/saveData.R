@@ -1,11 +1,11 @@
 saveData <- function(data) {
   data <- t(data)
-  # Create a unique file name
-  fileName <- sprintf("%s_%s.csv", as.integer(Sys.time()), digest::digest(data))
+  fileName <- "data_extraction.csv"
   # Write the file to the local system
-  write.csv(
+  write.table(
     x = data,
     file = file.path(outputDir, fileName), 
-    row.names = FALSE, quote = TRUE
+    row.names = FALSE, quote = TRUE,
+    append = TRUE
   )
 }
