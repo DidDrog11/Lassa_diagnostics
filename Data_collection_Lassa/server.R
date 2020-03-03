@@ -12,9 +12,9 @@ library("shiny")
 outputDir <- "/Users/david/Google Drive/PhD/LIPS Review/LIPS_Review/Lassa_diagnostics/Data_collection_Lassa"
 
 # Define the fields we want to save from the form
-fields <- c("Name", "Article title", "First Author", "Year(s) of data collection", "Country of data collection",
-            "Number of different assay types used", "Assay type", "Assay detection method", "Use of a 'Gold Standard'",
-            "Number of different animal species", "Animal species", "Number of samples", "Number positive", "Number negative", "Reported sensitivity", "Reported specificity",
+fields <- c("Name", "Article_title", "First_author", "Year_data", "Country_data",
+            "Number_assay", "Assay_type", "other_assay", "Gold_standard",
+            "Number_species", "Animal_species", "Number_samples", "Number_positive", "Number_negative", "Reported_sensitivity", "Reported_specificity",
             "Other comments")
 full_text <- read.csv(file = "Data_collection_Lassa/Full_text_export.csv")
 full_text <- full_text[order(full_text$title),]
@@ -35,9 +35,8 @@ server = function(input, output, session) {
     observeEvent(input$submit, {
         saveData(formData())
         resetForm(session)
-        n_responses <- length(list.files(outputDir))
-        response <- paste0("Thank you for completing data entry. This is record number ",
-                           n_responses, ".")
+        response <- paste0("Thank you for completing data entry for this study: ",
+                           input$Article_title, ".")
         showNotification(response, duration = 0, type = "message")
         
     })

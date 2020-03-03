@@ -10,7 +10,7 @@
 #define the questions and the types ----
 ui <- fluidPage(title = "Lassa fever diagnostics data extraction",
                 fluidRow(
-                  column(width = 6, 
+                  column(width = 8,
                          selectInput("Name", "What is your name?",
                                      c("",
                                        "David Simons",
@@ -28,7 +28,7 @@ ui <- fluidPage(title = "Lassa fever diagnostics data extraction",
                          textInput("Country_data", "Which country or countries were the data collected from?"),
                                      helpText("If there were multiple countries please state this. If it was laboratory based and it states where the animals came from please include this too"),
                          numericInput("Number_assay", "How many different asssays were used in the study?",
-                                      min = 0, max = 8, step = 1, value = 1),
+                                      min = 0, max = 8, step = 1, value = 0),
                                      helpText("If no assays where used the rest of the questions should remain hidden, but please make sure you press submit before moving on"),
                          conditionalPanel(condition = "input.Number_assay >= 1",
                                           checkboxGroupInput(inputId = "Assay_type",
@@ -43,15 +43,10 @@ ui <- fluidPage(title = "Lassa fever diagnostics data extraction",
                                                                          "Indirect detection: Rapid Diagnostic Test" = "rdt",
                                                                          "Other: which?" = "other"
                                                                          )),
-                                          conditionalPanel(condition = "input.Assay_type.includes(`Other: which?`)",
+                                          conditionalPanel(condition = "input.Assay_type.includes('Other: which?')",
                                                            textInput("other_assay", "Name of other assay")),
-                                          # checkboxGroupInput("Assay_detection", "Is the assay a direct or indirect method?",
-                                          #                    c("Direct detection" = "dd",
-                                          #                      "Indirect detection" = "id")
-                                          #                    ),
                                           checkboxInput("Gold_standard", "Tick if test compared to a 'Gold Standard' assay",
-                                                             c("Yes" = T,"No" = F),
-                                                        value = F),
+                                                             value = F),
                                           numericInput("Number_species", "How many different animal species were used in the study?",
                                                        min = 0, max = 8, step = 1, value = 0),
                                           conditionalPanel(condition = "input.Number_species >= 1",
@@ -68,9 +63,10 @@ ui <- fluidPage(title = "Lassa fever diagnostics data extraction",
                                                            numericInput("Reported_specificity", "What was the reported specificity?",
                                                                         min = 1, max = 6000, step = 1, value = 0),
                                                            ),
-                         ),
                          textAreaInput("Other comments", "Are there any other data to be collected from this paper?"),
-                         actionButton("submit", "Submit"))
+                         actionButton("submit", "Submit")
+                  )
+                )
                 )
 )
 
