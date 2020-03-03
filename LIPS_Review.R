@@ -86,8 +86,9 @@ for (i in 1:104) {
 table(Included_abstracts$Agreement)
 Full_text_screen <- subset(Included_abstracts[,c(1:2,5,10,15,17:20)], (Included_abstracts$Agreement == 3 | Included_abstracts$Agreement == ">1"))
 Need_screen <- as.data.frame(setdiff(Full_text_screen$title, Full_text$title))
+Full_text_screen$First_author <- gsub(" .*", "", Full_text_screen$authors)
 
-write_csv(Full_text_screen, path = "/Users/david/Google Drive/PhD/LIPS Review/Search/Full_text_export.csv")
+write_csv(Full_text_screen, path = "/Users/david/Google Drive/PhD/LIPS Review/Search/Full_text_screen.csv")
 
 # PRISMA ------------------------------------------------------------------
 tot <- 3028
