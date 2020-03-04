@@ -12,9 +12,9 @@ setwd("/Users/david/Google Drive/PhD/LIPS Review/LIPS_Review/Lassa_diagnostics/D
 outputDir <- getwd()
 
 # Define the fields we want to save from the form
-fields <- c("Name", "Article_title", "First_author", "Year_data", "Country_data",
+fields <- c("Name", "Article_title", "First_author", "Number_species", "Year_data", "Country_data",
             "Number_assay", "Assay_type", "other_assay", "Gold_standard",
-            "Number_species", "Animal_species", "Number_samples", "Number_positive", "Number_negative", "Reported_sensitivity", "Reported_specificity",
+            "Animal_species", "Number_samples", "Number_positive", "Number_negative", "Reported_sensitivity", "Reported_specificity",
             "Other comments")
 full_text <- read.csv(file = "Full_text_export.csv")
 full_text <- full_text[order(full_text$title),]
