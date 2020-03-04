@@ -11,6 +11,6 @@ saveData <- function(data) {
   #  sep = ","
   #)
   sink(file="data_extraction.json",append=TRUE)
-  cat(data)
+  cat(toJSON(data))
   sink()
 }

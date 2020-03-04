@@ -1,3 +1,6 @@
+
+library(rjson)
+
 fields <- c("Name", "Article_title", "First_author", "Number_species", "Year_data", "Country_data",
             "Number_assay", "Assay_type", "other_assay", "Gold_standard",
             "Animal_species", "Number_samples", "Number_positive", "Number_negative", "Reported_sensitivity", "Reported_specificity",
